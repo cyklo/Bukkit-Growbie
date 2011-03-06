@@ -8,7 +8,7 @@ growable_plants:
   RED_MUSHROOM: 2
   BROWN_MUSHROOM: 2
   LEAVES: 1
-
+  
 
 # growable blocks
 # block type, and what it should convert into when fed bone meal
@@ -16,3 +16,6 @@ growable_blocks:
   DIRT: GRASS
   COBBLESTONE: MOSSY_COBBLESTONE
   LOG: LEAVES
+  
+# set for better trees (biome-specific randomized types)
+better_trees: true

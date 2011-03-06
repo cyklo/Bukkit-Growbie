@@ -27,6 +27,7 @@ public class Growbie extends JavaPlugin {
 	private final GrowbieBlockListener blockListener = new GrowbieBlockListener(this);
 	private HashMap<Material,Integer> growablePlants;
 	private HashMap<Material,Material> growableBlocks;
+	private Boolean betterTrees = false;
 
 	public void checkConfigFile() {
 		// create config file if it doesn't exist
@@ -73,6 +74,10 @@ public class Growbie extends JavaPlugin {
 				if (m[1] == null && e.getValue() instanceof Integer) m[1] = Material.getMaterial(((Integer)e.getValue()).intValue());
 				if (m.length == 2 && m[0] != null && m[1] != null) growableBlocks.put(m[0], m[1]);
 			}
+			
+			// load better trees option
+			betterTrees = getConfiguration().getBoolean("better_trees", false);
+			
 		} catch (Exception e) {
 			System.out.println("Growbie: error loading configuration");
 		}
@@ -87,7 +92,6 @@ public class Growbie extends JavaPlugin {
 	public void onEnable() {
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvent(Event.Type.BLOCK_RIGHTCLICKED, this.blockListener, Event.Priority.Normal, this);
-
 		PluginDescriptionFile pdfFile = this.getDescription();
 		System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " enabled.");
 		this.checkConfigFile();
@@ -108,6 +112,10 @@ public class Growbie extends JavaPlugin {
 
 	public boolean isGrowableBlock(Material m) {
 		return growableBlocks.containsKey(m);
+	}
+	
+	public boolean isSapling(Material m) {
+		return (betterTrees && (m == Material.SAPLING));
 	}
 
 	public Material blockForGrowableBlock(Material m) {
