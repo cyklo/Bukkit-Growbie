@@ -1,0 +1,18 @@
+# Growbie configuration file
+
+# growable plants, and max number of them to grow on adjacent tiles
+growable_plants:
+  RED_ROSE: 4
+  YELLOW_FLOWER: 4
+  PUMPKIN: 2
+  RED_MUSHROOM: 2
+  BROWN_MUSHROOM: 2
+  LEAVES: 1
+
+
+# growable blocks
+# block type, and what it should convert into when fed bone meal
+growable_blocks:
+  DIRT: GRASS
+  COBBLESTONE: MOSSY_COBBLESTONE
+  LOG: LEAVES
