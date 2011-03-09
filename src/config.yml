@@ -17,5 +17,11 @@ growable_blocks:
   COBBLESTONE: MOSSY_COBBLESTONE
   LOG: LEAVES
   
+# spreadable blocks
+# seed block, followed by what it can propagate to and clone itself
+spreadable_blocks:
+  GRASS: DIRT
+  MOSSY_COBBLESTONE: COBBLESTONE
+  
 # set for better trees (biome-specific randomized types)
 better_trees: true

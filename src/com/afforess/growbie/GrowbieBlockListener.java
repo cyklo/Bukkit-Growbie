@@ -109,6 +109,35 @@ public class GrowbieBlockListener extends BlockListener {
 			if (didGrow) {
 				useItem(player);
 			}
+		} else if (plugin.isSpreadableBlock(block.getType())) {
+			
+			boolean didGrow = false;
+			
+			// Let's loop over three surrounding dimensions
+			int range = 1;
+			for (int dx = -(range); dx <= range; dx++){
+				for (int dy = -(range); dy <= range; dy++){
+					for (int dz = -(range); dz <= range; dz++){
+						
+						Block loop = block.getRelative(dx, dy, dz);
+						
+						if (loop.getType() == plugin.blockForSpreadableBlock(block.getType())) {
+							
+							// Special check for grass - only grow if air on block above
+							if(block.getType() == Material.GRASS && loop.getRelative(BlockFace.UP).getType() != Material.AIR) {
+								continue;
+							}
+							
+							loop.setType(block.getType());
+							didGrow = true;
+						}
+					}
+				}
+			}
+			// use 1 bone meal, only if something happened
+			if (didGrow) {
+				useItem(player);
+			}
 		} else if(plugin.isSapling(block.getType())){
 
 			// Biome data stolen from here

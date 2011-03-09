@@ -27,6 +27,7 @@ public class Growbie extends JavaPlugin {
 	private final GrowbieBlockListener blockListener = new GrowbieBlockListener(this);
 	private HashMap<Material,Integer> growablePlants;
 	private HashMap<Material,Material> growableBlocks;
+	private HashMap<Material,Material> spreadableBlocks;
 	private Boolean betterTrees = false;
 
 	public void checkConfigFile() {
@@ -50,9 +51,12 @@ public class Growbie extends JavaPlugin {
 		// load stuff
 		growablePlants = new HashMap<Material,Integer>();
 		growableBlocks = new HashMap<Material, Material>();
+		spreadableBlocks = new HashMap<Material, Material>();
+		
 		try {
 			HashMap<?, ?> srcGrowablePlants = (HashMap<?, ?>)this.getConfiguration().getProperty("growable_plants");
 			HashMap<?, ?> srcGrowableBlocks = (HashMap<?, ?>)this.getConfiguration().getProperty("growable_blocks");
+			HashMap<?, ?> srcSpreadableBlocks = (HashMap<?, ?>)this.getConfiguration().getProperty("spreadable_blocks");
 			Iterator<?> i;
 			Entry<?, ?> e;
 
@@ -65,7 +69,7 @@ public class Growbie extends JavaPlugin {
 				if (m != null) growablePlants.put(m, (Integer)e.getValue());
 			}
 
-			// load blocks
+			// load growable blocks
 			i = srcGrowableBlocks.entrySet().iterator();
 			while (i.hasNext()) {
 				e = (Entry<?, ?>)i.next();
@@ -73,6 +77,16 @@ public class Growbie extends JavaPlugin {
 				if (m[0] == null && e.getKey() instanceof Integer) m[0] = Material.getMaterial(((Integer)e.getKey()).intValue());
 				if (m[1] == null && e.getValue() instanceof Integer) m[1] = Material.getMaterial(((Integer)e.getValue()).intValue());
 				if (m.length == 2 && m[0] != null && m[1] != null) growableBlocks.put(m[0], m[1]);
+			}
+			
+			// load spreadable blocks
+			i = srcSpreadableBlocks.entrySet().iterator();
+			while (i.hasNext()) {
+				e = (Entry<?, ?>)i.next();
+				Material[] m = {Material.getMaterial(e.getKey().toString()), Material.getMaterial(e.getValue().toString())};
+				if (m[0] == null && e.getKey() instanceof Integer) m[0] = Material.getMaterial(((Integer)e.getKey()).intValue());
+				if (m[1] == null && e.getValue() instanceof Integer) m[1] = Material.getMaterial(((Integer)e.getValue()).intValue());
+				if (m.length == 2 && m[0] != null && m[1] != null) spreadableBlocks.put(m[0], m[1]);
 			}
 			
 			// load better trees option
@@ -114,11 +128,19 @@ public class Growbie extends JavaPlugin {
 		return growableBlocks.containsKey(m);
 	}
 	
+	public boolean isSpreadableBlock(Material m) {
+		return spreadableBlocks.containsKey(m);
+	}
+	
 	public boolean isSapling(Material m) {
 		return (betterTrees && (m == Material.SAPLING));
 	}
 
 	public Material blockForGrowableBlock(Material m) {
 		return growableBlocks.get(m);
+	}
+	
+	public Material blockForSpreadableBlock(Material m) {
+		return spreadableBlocks.get(m);
 	}
 }
