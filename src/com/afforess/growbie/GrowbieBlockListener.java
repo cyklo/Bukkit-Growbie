@@ -101,9 +101,12 @@ public class GrowbieBlockListener extends BlockListener {
 				}
 			}
 			else {
-				// transform block
-				block.setType(plugin.blockForGrowableBlock(block.getType()));
-				didGrow = true;
+				// if the target is grass and no air above, do not do
+				if(block.getRelative(BlockFace.UP).getType() == Material.AIR || plugin.blockForGrowableBlock(block.getType()) != Material.GRASS) {
+					// transform block
+					block.setType(plugin.blockForGrowableBlock(block.getType()));
+					didGrow = true;
+				}
 			}
 			// use 1 bone meal, only if something happened
 			if (didGrow) {
